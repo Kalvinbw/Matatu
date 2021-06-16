@@ -65,3 +65,4 @@ class Board {
 let gameBoard = new Board();
 gameBoard.start('Mario', 'Luigi');
 console.log(gameBoard.players);
+
