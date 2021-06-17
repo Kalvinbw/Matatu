@@ -1,3 +1,5 @@
+const { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } = require("constants");
+
 //Card Class
 class Card {
     constructor(suit, rank, value) {
@@ -5,6 +7,7 @@ class Card {
         this.rank = rank;
         this.value = value;
     }
+    ability;
 }
 
 //Deck Class
@@ -23,6 +26,28 @@ class Deck {
                 this.cards.push(new Card(suits[i], ranks[j], values[j]));
             }
         }
+
+        for (let i = 0; i < this.cards.length; i++) {
+            if (this.cards[i].value === 1 || this.cards[i].value === 2 ||
+                this.cards[i].value === 8 || this.cards[i].value === 10) 
+            {
+                let x = this.cards[i].value;
+                switch (x) {
+                    case 1:
+                        this.cards[i].ability = 'skip';
+                        break;
+                    case 2:
+                        this.cards[i].ability = 'Draw Two';
+                        break;
+                    case 8:
+                        this.cards[i].ability = 'Wild Card';
+                        break;
+                    case 10:
+                        this.cards[i].ability = 'Draw Four';
+                        break;
+                }
+            }
+        }
     }
     shuffleDeck() {
         let location1, location2, tmp;
@@ -38,9 +63,14 @@ class Deck {
 
 //Player Class
 class Player {
-    constructor(name) {
-        this.playerName = name;
+    constructor(id) {
+        this.id = id;
         this.playerCards = [];
+    }
+    name;
+
+    updateName(n) {
+        this.name = n;
     }
 }
 
@@ -50,9 +80,9 @@ class Board {
         this.cardsInMiddle = [];
         this.players = [];
     }
-    start(playerOneName, playerTwoName) {
-        this.players.push(new Player(playerOneName));
-        this.players.push(new Player(playerTwoName));
+    start(playerOneId, playerTwoId) {
+        this.players.push(new Player(playerOneId));
+        this.players.push(new Player(playerTwoId));
         let d = new Deck();
         d.createDeck();
         d.shuffleDeck();    
@@ -62,7 +92,7 @@ class Board {
 }
 
 
-let gameBoard = new Board();
-gameBoard.start('Mario', 'Luigi');
-console.log(gameBoard.players);
+// let gameBoard = new Board();
+// gameBoard.start('Mario', 'Luigi');
+// console.log(gameBoard.players);
 
