@@ -4,24 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Game</title>
+    <title>Matatu</title>
 </head>
 <body>
+    <form id="nameForm" action="">
+        <input id="nameInput" autocomplete="off" /><button>Send</button>
+    </form>
+
+
+
+
     <script src="index.js"></script>
     <script src="main.js"></script>
 
     <script>
-
         var socket = io();
 
-        var messages = document.getElementById('messages');
-        var form = document.getElementById('form');
-        var input = document.getElementById('input');
+        var form = document.getElementById('nameForm');
+        var input = document.getElementById('nameInput');
 
         form.addEventListener('submit', function(e) {
             e.preventDefault();
             if (input.value) {
-            socket.emit('chat message', input.value);
+            socket.emit('name', input.value);
             input.value = '';
             }
         });
@@ -32,7 +37,7 @@
         messages.appendChild(item);
         window.scrollTo(0, document.body.scrollHeight);
         });
-        
+
     </script>
 
 </body>
