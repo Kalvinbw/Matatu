@@ -2,6 +2,7 @@ import '../styles/App.css';
 import Header from './header';
 import React from 'react';
 // TODO: Design endgame to show winner on top
+
 function GameOver(props) {
     console.log(props.players);
     return (

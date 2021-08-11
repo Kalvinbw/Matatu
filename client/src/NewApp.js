@@ -11,6 +11,14 @@ import GameOver from "./components/GameOver";
 // TODO: Handle one card left (going out)
 // TODO: Handle 8 card
 // TODO: Handle adding another draw extra card if you have one in hand
+// TODO: announce plays after they happen
+// TODO: with two players you play again after draw extra card/skip turn of recipient
+// TODO: disable draw card if not turn
+// TODO: organize hand by suit or number on button click
+// TODO: show how many cards are left in opponents hand
+// TODO: let room set final score and play games until reached (add score each round);
+// TODO: end game right away and total scores
+
 // TODO: handle max amount of players in a game (or add more to deck)
 // TODO: handle waiting room and room creator
 // TODO: handle disconnect and reconnect
