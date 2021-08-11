@@ -70,7 +70,7 @@ io.on('connection', (socket) => {
     });
 
     socket.on('playData', (p, hand) => {
-        console.log('playdata in server');
+        console.log('play data in server');
         let updatedGame = doPlay(p, hand);
         for(let i = 0; i < updatedGame.players.length; i++) {
             io.to(updatedGame.players[i].id).emit('playerData', updatedGame.players[i]);
