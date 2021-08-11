@@ -8,7 +8,6 @@ import queryString from 'query-string';
 import io from 'socket.io-client';
 import GameOver from "./components/GameOver";
 
-// TODO: End game and calculate winner
 // TODO: Handle one card left (going out)
 // TODO: Handle 8 card
 // TODO: Handle adding another draw extra card if you have one in hand
