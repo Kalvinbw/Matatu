@@ -116,7 +116,7 @@ const NewApp = ({ location }, props) => {
                 <div className='H-stack'>
                     <div className='Deck' id='drawPile'>             
                     {game.deck.map((card) => (
-                        <Card key={card.id} show={true} card={card}
+                        <Card key={card.id} show={false} card={card}
                         className='Card' handleChange={drawCard}/>
                     ))}
                     </div>
@@ -124,7 +124,7 @@ const NewApp = ({ location }, props) => {
                     <div className='Deck' id='drawPile'>             
                     {game.playPile.map((card) => (
                         <Card key={card.id} show={true} card={card}
-                        className='Card' handleChange={drawCard}/>
+                        className='Card' handleChange={() => null}/>
                     ))}
                     </div>
 
