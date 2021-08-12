@@ -6,8 +6,8 @@ const app = express();
 const path = require('path');
 
 const {makeDeck} = require('./deck');
-const { addPlayer, removePlayer, getPlayer, getPlayersInRoom } = require('./players');
-const {addRoom, doPlay, drawCard} = require('./game');
+const { addPlayer, getPlayer } = require('./players');
+const {addRoom, doPlay, drawCard, removePlayer} = require('./game');
 
 //app.use(express.static(path.join(__dirname, '../client/build')));
 
@@ -57,12 +57,17 @@ io.on('connection', (socket) => {
     });
 
     socket.on('drawCard', (p) => {
-       ////console.log('drawing card');
-       let updatedGame = drawCard(p);
-       for(let i = 0; i < updatedGame.players.length; i++) {
-           io.to(updatedGame.players[i].id).emit('playerData', updatedGame.players[i]);
-       }
-       io.in(updatedGame.name).emit('roomData', updatedGame);
+        console.log('drawing card');
+        //console.log(p);
+        let updatedGame = drawCard(p);
+        if(!updatedGame.error) {
+            for(let i = 0; i < updatedGame.players.length; i++) {
+                io.to(updatedGame.players[i].id).emit('playerData', updatedGame.players[i]);
+            }
+            io.in(updatedGame.name).emit('roomData', updatedGame);
+        } else {
+            console.log(updatedGame.error);
+        }
     });
 
     socket.on('callPlay', (player) => {
@@ -80,14 +85,22 @@ io.on('connection', (socket) => {
     });
 
     socket.on('disconnect', () => {
-        const user = removePlayer(socket.id);
-
-        if(user) {
-            io.to(user.room).emit('message', { user: 'Matatu', text: `${user.name} has left.` });
-            io.to(user.room).emit('roomData', { room: user.room, users: getPlayersInRoom(user.room)});
+        console.log('a player has disconnected');
+        let p = getPlayer(socket.id);
+        let updatedGame = removePlayer(p);
+        console.log(updatedGame.name);
+        if(updatedGame.error) {
+            console.log('error on disconenct');
+        } else {
+            for(let i = 0; i < updatedGame.players.length; i++) {
+                io.to(updatedGame.players[i].id).emit('playerData', updatedGame.players[i]);
+            }
+            io.to(p.id).emit('playerData', updatedGame.players[p.index]);
+            io.in(updatedGame.name).emit('roomData', updatedGame);
         }
-    })
-})
+
+    });
+});
 
 
 

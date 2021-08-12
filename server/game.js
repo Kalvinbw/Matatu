@@ -1,4 +1,3 @@
-const { addPlayer, removePlayer, getPlayer, getPlayersInRoom } = require('./players');
 let {makeDeck, shuffleArray} = require('./deck');
 let games = [];
 
@@ -31,6 +30,37 @@ const addRoom = (player, roomName, deck) => {
         ////console.log(room.playPile);
         return room;
 
+    }
+}
+
+const removeRoom = (gameIndex) => {
+    return games.splice(gameIndex, 1)[0];
+}
+
+const removePlayer = (player) => {
+    let gameIndex = games.findIndex((room) => room.name === player.room);
+    if(gameIndex === -1) {return {error: 'Game not found'}};
+    //console.log(games[gameIndex]);
+    let playerIndex = games[gameIndex].players.findIndex(p => p.id === player.id);
+    if(playerIndex !== -1) {
+        let removedPlayer = games[gameIndex].players.splice(playerIndex, 1);
+        //console.log(player);
+        if(games[gameIndex].players.length >= 1) {
+            let cards = player.cards;
+            //console.log(games[gameIndex]);
+            games[gameIndex].deck.push(...cards);
+            if(player.turn) {
+                var nextPlayer = (games[gameIndex].players.length - 1) === player.index ? 0 : player.index + 1;
+                games[gameIndex].players[nextPlayer].turn = true;
+            }
+            console.log(games);
+            return games[gameIndex];
+        } else {
+            console.log('removing game');
+            return removeRoom(gameIndex);
+        }
+    } else {
+        return {error: 'Player not found'};
     }
 }
 
@@ -126,14 +156,16 @@ function skipTurn(player, game, cards) {
 }
 
 const drawCard = (player) => {
-    ////console.log('draw card');
+    if(!player) {return {error: 'no player data received'}}
+    console.log('draw card');
     let gameIndex = games.findIndex((room) => room.name === player.room);
 
+    //console.log(games[gameIndex]);
     if(games[gameIndex].deck.length <= 1) {
         let shuffleCards = games[gameIndex].playPile.splice(0, games[gameIndex].playPile.length - 2);
-        ////console.log(shuffleCards);
+        //console.log(shuffleCards);
         shuffleCards = shuffleArray(shuffleCards);
-        ////console.log(shuffleCards);
+        //console.log(shuffleCards);
         games[gameIndex].deck.unshift(...shuffleCards);
     }
 
@@ -169,4 +201,4 @@ function gameOver(game) {
     return game;
 }
 
-module.exports = {addRoom, doPlay, drawCard};
+module.exports = {addRoom, doPlay, drawCard, removePlayer};

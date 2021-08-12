@@ -28,7 +28,7 @@ import PlayerCard from "./components/playerCard";
 
 let socket;
 
-const NewApp = ({ location }, props) => {
+const NewApp = ({ location }) => {
     const [player, setPlayer] = useState('');
     const [game, setGame] = useState({});
     
@@ -44,18 +44,23 @@ const NewApp = ({ location }, props) => {
         });
 
         socket.emit('joinRoom', {name, room}, (error) => {
-            //console.log('emit join room');
+            console.log('emit join room');
             if(error) {
                 alert(error);
-                props.history.push('/');
             }
         });
+
+        return () => {
+            console.log('about to disconnect');
+            socket.disconnect();
+        }
     }, [ENDPOINT, location.search]);
 
     //handle update data calls
     useEffect(() => {
         socket.on('roomData', (room) => {
-            //console.log('new room data received');
+            console.log('new room data received');
+            console.log(room);
             setGame(room);
         });
 
@@ -67,6 +72,8 @@ const NewApp = ({ location }, props) => {
     //handle player data
     useEffect(() => {
         socket.on('playerData', (player) => {
+            console.log('new player data received');
+            console.log(player);
             setPlayer(player);
         });
 
@@ -87,6 +94,8 @@ const NewApp = ({ location }, props) => {
 
     //send data to draw a card
     const drawCard = () => {
+        console.log('drawing card');
+        console.log(player);
         socket.emit('drawCard', player);
     }
 
