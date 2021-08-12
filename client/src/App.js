@@ -64,8 +64,8 @@ class App extends React.Component {
 
   configureSocket() {
     this.socket.on('connection', (data) => {
-      console.log('connection done');
-      console.log(data);
+      //console.log('connection done');
+      //console.log(data);
       this.setState({
         rooms: data
       })
@@ -73,7 +73,7 @@ class App extends React.Component {
   }
 
   shuffleArray(array) {
-    //console.log(this.state.cards);
+    ////console.log(this.state.cards);
     //let array = this.state.cards;
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -126,7 +126,7 @@ class App extends React.Component {
   }
 
   callPlay() {
-    console.log('play called');
+    //console.log('play called');
     let players = this.state.players;
     for(let i = 0; i < players.length; i++) {
       if(players[i].turn) {
@@ -137,7 +137,7 @@ class App extends React.Component {
   }
 
   handlePlay(playedCards) {
-    //console.log('handle play called from app');
+    ////console.log('handle play called from app');
     if(!playedCards) {
       this.callPlay();
       return;
@@ -195,7 +195,7 @@ class App extends React.Component {
 
   abilites(cards, players, id) {
     /* TODO: handle 8 cards */
-    console.log(cards[0].ability)
+    //console.log(cards[0].ability)
     switch(cards[0].ability) {
       case 'Draw 2':
         this.drawExtra(players, 2, id, cards);

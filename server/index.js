@@ -27,7 +27,7 @@ app.get('/', function(req,res) {
 
 //listen on the port //the function part is a callback function
 let server = app.listen(listenPort, function() {
-    console.log("listener is active on Port " + listenPort);
+    //console.log("listener is active on Port " + listenPort);
 });
 
 
@@ -40,7 +40,7 @@ const io = require('socket.io')(server, {
 
 
 io.on('connection', (socket) => {
-    //console.log(`New client connected: ${socket.id}`);
+    ////console.log(`New client connected: ${socket.id}`);
     socket.on('joinRoom', ({ name, room }, callback) => {
         let Player = addPlayer({id: socket.id, name, room});
         if(Player === "Username is taken.") return callback(Player);
@@ -57,7 +57,7 @@ io.on('connection', (socket) => {
     });
 
     socket.on('drawCard', (p) => {
-       //console.log('drawing card');
+       ////console.log('drawing card');
        let updatedGame = drawCard(p);
        for(let i = 0; i < updatedGame.players.length; i++) {
            io.to(updatedGame.players[i].id).emit('playerData', updatedGame.players[i]);
@@ -70,7 +70,7 @@ io.on('connection', (socket) => {
     });
 
     socket.on('playData', (p, hand) => {
-        console.log('play data in server');
+        //console.log('play data in server');
         let updatedGame = doPlay(p, hand);
         for(let i = 0; i < updatedGame.players.length; i++) {
             io.to(updatedGame.players[i].id).emit('playerData', updatedGame.players[i]);

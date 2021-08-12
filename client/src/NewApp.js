@@ -35,7 +35,7 @@ const NewApp = ({ location }, props) => {
 
     //handle joining the game room
     useEffect(() => {
-        console.log(location);
+        //console.log(location);
         const {name, room} = queryString.parse(location.search);
 
         socket = io(ENDPOINT, {
@@ -43,7 +43,7 @@ const NewApp = ({ location }, props) => {
         });
 
         socket.emit('joinRoom', {name, room}, (error) => {
-            console.log('emit join room');
+            //console.log('emit join room');
             if(error) {
                 alert(error);
                 props.history.push('/');
@@ -54,7 +54,7 @@ const NewApp = ({ location }, props) => {
     //handle update data calls
     useEffect(() => {
         socket.on('roomData', (room) => {
-            console.log('new room data received');
+            //console.log('new room data received');
             setGame(room);
         });
 

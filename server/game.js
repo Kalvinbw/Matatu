@@ -5,7 +5,7 @@ let games = [];
 const addRoom = (player, roomName, deck) => {
     let d = [...deck];
     let index = games.findIndex((room) => room.name === roomName);
-    //console.log(index);
+    ////console.log(index);
     
     if(games.length !== 0 && index !== -1) {
         if(games[index].players.length >= 8) {
@@ -17,7 +17,7 @@ const addRoom = (player, roomName, deck) => {
         player.index = games[index].players.length
         player.cards = games[index].deck.splice(0,4);
         games[index].players.push(player);
-        //console.log(player.cards);
+        ////console.log(player.cards);
         return games[index];
 
     } else if(index === -1) {
@@ -25,17 +25,17 @@ const addRoom = (player, roomName, deck) => {
         let playDeck = d.splice(0,1);
         player.cards = d.splice(0,4);
         player.turn = true;
-        //console.log(playDeck);
+        ////console.log(playDeck);
         let room = {name: roomName, players: [player], deck: d, playPile: playDeck};
         games.push(room);
-        //console.log(room.playPile);
+        ////console.log(room.playPile);
         return room;
 
     }
 }
 
 const doPlay = (player, hand) => {
-    console.log('doPlay');
+    ////console.log('doPlay');
     //find the game
     let gameIndex = games.findIndex((room) => room.name === player.room);
 
@@ -126,14 +126,14 @@ function skipTurn(player, game, cards) {
 }
 
 const drawCard = (player) => {
-    console.log('draw card');
+    ////console.log('draw card');
     let gameIndex = games.findIndex((room) => room.name === player.room);
 
     if(games[gameIndex].deck.length <= 1) {
         let shuffleCards = games[gameIndex].playPile.splice(0, games[gameIndex].playPile.length - 2);
-        console.log(shuffleCards);
+        ////console.log(shuffleCards);
         shuffleCards = shuffleArray(shuffleCards);
-        console.log(shuffleCards);
+        ////console.log(shuffleCards);
         games[gameIndex].deck.unshift(...shuffleCards);
     }
 
