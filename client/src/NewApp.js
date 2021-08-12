@@ -119,7 +119,7 @@ const NewApp = ({ location }, props) => {
                     <div className='Deck' id='drawPile'>             
                     {game.deck.map((card) => (
                         <Card key={card.id} show={false} card={card}
-                        className='Card' handleChange={drawCard}/>
+                        className='Card' handleChange={player.turn ? drawCard : () => null}/>
                     ))}
                     </div>
 
