@@ -112,7 +112,7 @@ const NewApp = ({ location }, props) => {
             <div className='App-body'>
                 <div className='H-stack' style={{backgroundColor: '#222f49'}}>
                     {game.players.map((p) => (
-                        <PlayerCard player={p}/>
+                        <PlayerCard player={p} className='Hand'/>
                     ))}
                 </div>
                 <div className='H-stack'>

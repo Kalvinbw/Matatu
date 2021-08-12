@@ -8,7 +8,8 @@ function PlayerCard(props) {
         myClass = myClass + ' selected';
     }
     return (
-        <div className={myClass} onClick={onClick}>
+        <div className={myClass}>
+            <h6>Player: {props.player.index + 1}</h6>
             <h6>{props.player.name}</h6>
             <h6>Cards: {props.player.cards.length}</h6>
         </div>
