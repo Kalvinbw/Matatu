@@ -7,6 +7,7 @@ import React, {useState, useEffect} from 'react';
 import queryString from 'query-string';
 import io from 'socket.io-client';
 import GameOver from "./components/GameOver";
+import PlayerCard from "./components/playerCard";
 
 // TODO: Handle one card left (going out)
 // TODO: Handle 8 card
@@ -110,15 +111,9 @@ const NewApp = ({ location }, props) => {
             <Header text={`Welcome to ${game.name}, ${player.name}`}/>
             <div className='App-body'>
                 <div className='H-stack' style={{backgroundColor: '#222f49'}}>
-                    <div>
-                        <p>Players in {game.name}</p>
-                        <ul>
-                            {game.players.map((p) => (
-                                <li key={p.name}>{p.name}</li>
-                            ))}
-                        </ul>
-                    </div>
-                    
+                    {game.players.map((p) => (
+                        <PlayerCard player={p}/>
+                    ))}
                 </div>
                 <div className='H-stack'>
                     <div className='Deck' id='drawPile'>             
