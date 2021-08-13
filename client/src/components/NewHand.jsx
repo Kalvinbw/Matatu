@@ -7,6 +7,7 @@ const Hand = (props) => {
 
     //update playable cards on turn
     useEffect(() => {
+        console.log('newHand init');
         let hand = props.player.cards;
         ////console.log('use effect called');
         let tc = props.topCard;

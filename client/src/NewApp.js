@@ -3,7 +3,7 @@ import Header from './components/header';
 import Hand from './components/NewHand';
 import Card from './components/Card';
 //import GameOver from './components/GameOver';
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import queryString from 'query-string';
 import io from 'socket.io-client';
 import GameOver from "./components/GameOver";
@@ -69,7 +69,9 @@ const NewApp = ({ location }) => {
     useEffect(() => {
         socket.on('playerData', (player) => {
             console.log('new player data received');
-            console.log(player);
+            if(player.sort) {
+                player.cards = sortCards(player.cards);
+            }
             setPlayer(player);
         });
 
@@ -93,6 +95,31 @@ const NewApp = ({ location }) => {
         console.log('drawing card');
         console.log(player);
         socket.emit('drawCard', player);
+    }
+
+    const sortCards = () => {
+        console.log('called sortCards');
+        let cards = [...player.cards];
+        console.log(cards);
+        for(let i = 0; i < cards.length; i++) {
+            for(let j = i + 1; j < cards.length; j++) {
+                let temp;
+                if(cards[i].number < cards[j].number) {
+                    // console.log('hello')
+                    // temp = cards[j];
+                    // cards[j] = cards[i];
+                    // cards[i] = temp;
+                } else if(cards[i].number > cards[j].number) {
+                    console.log('hello2')
+                    temp = cards[i];
+                    cards[i] = cards[j];
+                    cards[j] = temp;
+                }
+            }
+        }
+        console.log(cards);
+        player.cards = cards;
+        setPlayer({...player});
     }
 
     //render this if not loaded yet
@@ -138,8 +165,12 @@ const NewApp = ({ location }) => {
                     <p className={player.turn ? 'App-link' : null}>
                         {player.turn ? `Your Turn` : `Opponent's Turn`}
                     </p>
+                    <div style={{display: 'flex',flexDirection: 'column'}}>
+                        <input type='button' onClick={player.turn ? callPlay : null} value='Play Selected Card(s)'/>
+                        <input type='button' onClick={sortCards} value='Sort Cards Numerically'/>
+                        <input type='button' onClick={sortCards} value='Sort Cards By Suit'/>
+                    </div>
 
-                    <input type='button' onClick={player.turn ? callPlay : null} value='Play Selected Card(s)'/>
                 </div>
                 <Hand player={player} 
                 socket={socket}
