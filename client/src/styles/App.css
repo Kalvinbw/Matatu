@@ -68,7 +68,7 @@
 
 .Hand {
   background-color: black;
-  border: white;
+  border: rgb(161, 161, 161);
   border-radius: 15px;
   border-style: solid;
   height: 13rem;
@@ -83,7 +83,7 @@
 
 .Card {
   background-color: black;
-  border: white;
+  border: rgb(161, 161, 161);
   border-radius: 15px;
   border-style: solid;
   height: 13rem;
@@ -101,11 +101,11 @@
 }
 
 .playable {
-  background-color: rgb(168, 168, 168);
+  border-color: gold;
 }
 
 .selected {
-  background-color: rgb(229, 145, 236);
+  border-color: rgb(229, 145, 236);
 }
 
 h6 {
