@@ -7,7 +7,7 @@ const Hand = (props) => {
 
     //update playable cards on turn
     useEffect(() => {
-        console.log('newHand init');
+        //console.log('newHand init');
         let hand = props.player.cards;
         ////console.log('use effect called');
         let tc = props.topCard;
@@ -82,9 +82,6 @@ const Hand = (props) => {
     }
 
     const checkCanPlay = (array, checkCard) => {
-        // //console.log('check card');
-        // //console.log(array);
-        // //console.log(checkCard);
         //if joker is on top, any card is playable
         let ar = [...array];
         if(checkCard.number === 0) {

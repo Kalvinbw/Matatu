@@ -53,10 +53,10 @@ const removePlayer = (player) => {
                 var nextPlayer = (games[gameIndex].players.length - 1) === player.index ? 0 : player.index + 1;
                 games[gameIndex].players[nextPlayer].turn = true;
             }
-            console.log(games);
+            //console.log(games);
             return games[gameIndex];
         } else {
-            console.log('removing game');
+            //console.log('removing game');
             return removeRoom(gameIndex);
         }
     } else {
@@ -125,7 +125,18 @@ const handleAbility = (player, game, cards) => {
 }
 
 function drawExtra(player, game, drawAmount, cards) {
-    let nextPlayer = (game.players.length - 1) === player.index ? 0 : player.index + 1;
+    let nextPlayer;
+    if(game.players.length > 2) {
+        if((game.players.length - 1) === player.index) {
+            nextPlayer = 1;
+        } else if((game.players.length - 2) === player.index) {
+            nextPlayer = 0;
+        } else {
+            nextPlayer = player.index + 2;
+        }
+    } else {
+        nextPlayer = player.index;
+    }
     if(game.deck.length <= (drawAmount * cards.length)) {
         let shuffleCards = game.playPile.splice(0, game.playPile.length - 2);
         shuffleCards = shuffleArray(shuffleCards);
@@ -157,7 +168,7 @@ function skipTurn(player, game, cards) {
 
 const drawCard = (player) => {
     if(!player) {return {error: 'no player data received'}}
-    console.log('draw card');
+    //console.log('draw card');
     let gameIndex = games.findIndex((room) => room.name === player.room);
 
     //console.log(games[gameIndex]);

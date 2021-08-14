@@ -57,7 +57,7 @@ io.on('connection', (socket) => {
     });
 
     socket.on('drawCard', (p) => {
-        console.log('drawing card');
+        //console.log('drawing card');
         //console.log(p);
         let updatedGame = drawCard(p);
         if(!updatedGame.error) {
@@ -85,12 +85,12 @@ io.on('connection', (socket) => {
     });
 
     socket.on('disconnect', () => {
-        console.log('a player has disconnected');
+        //console.log('a player has disconnected');
         let p = getPlayer(socket.id);
         let updatedGame = removePlayer(p);
-        console.log(updatedGame.name);
+        //console.log(updatedGame.name);
         if(updatedGame.error) {
-            console.log('error on disconenct');
+            //console.log('error on disconenct');
         } else {
             for(let i = 0; i < updatedGame.players.length; i++) {
                 io.to(updatedGame.players[i].id).emit('playerData', updatedGame.players[i]);

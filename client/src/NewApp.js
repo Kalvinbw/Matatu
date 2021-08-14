@@ -10,11 +10,9 @@ import GameOver from "./components/GameOver";
 import PlayerCard from "./components/playerCard";
 
 // TODO: Handle one card left (going out)
+// TODO: announce plays after they happen
 // TODO: Handle 8 card
 // TODO: Handle adding another draw extra card if you have one in hand
-// TODO: announce plays after they happen
-// TODO: with two players you play again after draw extra card/skip turn of recipient
-// TODO: organize hand by suit or number on button click
 // TODO: let room set final score and play games until reached (add score each round);
 // TODO: end game right away and total scores
 
@@ -40,14 +38,14 @@ const NewApp = ({ location }) => {
         });
 
         socket.emit('joinRoom', {name, room}, (error) => {
-            console.log('emit join room');
+            //console.log('emit join room');
             if(error) {
                 alert(error);
             }
         });
 
         return () => {
-            console.log('about to disconnect');
+            //console.log('about to disconnect');
             socket.disconnect();
         }
     }, [ENDPOINT, location.search]);
@@ -55,7 +53,7 @@ const NewApp = ({ location }) => {
     //handle update data calls
     useEffect(() => {
         socket.on('roomData', (room) => {
-            console.log('new room data received');
+            //console.log('new room data received');
             console.log(room);
             setGame(room);
         });
@@ -68,7 +66,7 @@ const NewApp = ({ location }) => {
     //handle player data
     useEffect(() => {
         socket.on('playerData', (player) => {
-            console.log('new player data received');
+            //console.log('new player data received');
             if(player.sort) {
                 player.cards = sortCards(player.cards);
             }
@@ -92,32 +90,27 @@ const NewApp = ({ location }) => {
 
     //send data to draw a card
     const drawCard = () => {
-        console.log('drawing card');
-        console.log(player);
+        // console.log('drawing card');
+        // console.log(player);
         socket.emit('drawCard', player);
     }
 
     const sortCards = () => {
-        console.log('called sortCards');
+        //console.log('called sortCards');
         let cards = [...player.cards];
-        console.log(cards);
+        //console.log(cards);
         for(let i = 0; i < cards.length; i++) {
+            cards[i].selected = false;
             for(let j = i + 1; j < cards.length; j++) {
                 let temp;
-                if(cards[i].number < cards[j].number) {
-                    // console.log('hello')
-                    // temp = cards[j];
-                    // cards[j] = cards[i];
-                    // cards[i] = temp;
-                } else if(cards[i].number > cards[j].number) {
-                    console.log('hello2')
+                if(cards[i].number > cards[j].number) {
                     temp = cards[i];
                     cards[i] = cards[j];
                     cards[j] = temp;
                 }
             }
         }
-        console.log(cards);
+        //console.log(cards);
         player.cards = cards;
         setPlayer({...player});
     }
@@ -167,8 +160,7 @@ const NewApp = ({ location }) => {
                     </p>
                     <div style={{display: 'flex',flexDirection: 'column'}}>
                         <input type='button' onClick={player.turn ? callPlay : null} value='Play Selected Card(s)'/>
-                        <input type='button' onClick={sortCards} value='Sort Cards Numerically'/>
-                        <input type='button' onClick={sortCards} value='Sort Cards By Suit'/>
+                        <input type='button' onClick={sortCards} value='Sort Cards'/>
                     </div>
 
                 </div>
