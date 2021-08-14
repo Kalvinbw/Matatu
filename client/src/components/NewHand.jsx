@@ -13,6 +13,10 @@ const Hand = (props) => {
         let tc = props.topCard;
         if(props.player.turn) {
             let h = checkCanPlay(hand, tc);
+            h = hand.map(c => {
+                c.selected = false;
+                return c;
+            });
             setHand(h);
         } else {
             let h = hand.map(c => {

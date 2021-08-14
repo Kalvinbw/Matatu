@@ -54,7 +54,7 @@ const NewApp = ({ location }) => {
     useEffect(() => {
         socket.on('roomData', (room) => {
             //console.log('new room data received');
-            console.log(room);
+            //console.log(room);
             setGame(room);
         });
 
@@ -100,7 +100,6 @@ const NewApp = ({ location }) => {
         let cards = [...player.cards];
         //console.log(cards);
         for(let i = 0; i < cards.length; i++) {
-            cards[i].selected = false;
             for(let j = i + 1; j < cards.length; j++) {
                 let temp;
                 if(cards[i].number > cards[j].number) {
