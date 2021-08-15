@@ -125,7 +125,7 @@ const handleAbility = (player, game, cards) => {
 }
 
 function drawExtra(player, game, drawAmount, cards) {
-    let nextPlayer = (games[gameIndex].players.length - 1) === player.index ? 0 : player.index + 1;
+    let nextPlayer = (game.players.length - 1) === player.index ? 0 : player.index + 1;
     if(game.deck.length <= (drawAmount * cards.length)) {
         let shuffleCards = game.playPile.splice(0, game.playPile.length - 2);
         shuffleCards = shuffleArray(shuffleCards);
