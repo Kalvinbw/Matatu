@@ -1,5 +1,4 @@
 import React from 'react';
-import logo from '../assets/logo.svg';
 
 function PlayerCard(props) {
     let myClass = props.className;

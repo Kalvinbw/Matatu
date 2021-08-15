@@ -7,7 +7,7 @@ function GameOver(props) {
     //console.log(props.players);
     return (
         <div>
-            <Header />
+            <Header text='Game Over'/>
             <div className='App-body'>
                 <div>
                     <p className='App-link'>

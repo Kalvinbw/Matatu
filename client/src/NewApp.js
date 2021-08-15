@@ -155,9 +155,6 @@ const NewApp = ({ location }) => {
                     ))}
                     </div>
 
-                    <p className={player.turn ? 'App-link' : null}>
-                        {player.turn ? `Your Turn` : `Opponent's Turn`}
-                    </p>
                     <div style={{display: 'flex',flexDirection: 'column'}}>
                         <input type='button' onClick={player.turn ? callPlay : null} value='Play Selected Card(s)'/>
                         <input type='button' onClick={sortCards} value='Sort Cards'/>

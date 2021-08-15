@@ -25,7 +25,7 @@
 }
 
 .App-body {
-  background-color: grey;
+  background-color: rgb(77, 77, 77);
   height: 95vh;
   width: 100%;
   display: flex;
@@ -68,7 +68,7 @@
 
 .Hand {
   background-color: black;
-  border: rgb(161, 161, 161);
+  border: rgb(14, 14, 14);
   border-radius: 15px;
   border-style: solid;
   height: 13rem;
@@ -77,13 +77,13 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-evenly;
-  color: black;
+  color: rgb(80, 80, 80);
   position: relative;
 }
 
 .Card {
   background-color: black;
-  border: rgb(161, 161, 161);
+  border: rgb(14, 14, 14);
   border-radius: 15px;
   border-style: solid;
   height: 13rem;
@@ -92,25 +92,27 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-evenly;
-  color: black;
+  color: rgb(80, 80, 80);
   position: absolute;
 }
 
 .flipped {
-  background-color: rgb(54, 54, 54);
+  background-color: rgb(138, 138, 138);
 }
 
 .playable {
   border-color: gold;
+  border-width: 3px;
 }
 
 .selected {
   border-color: rgb(229, 145, 236);
+  border-width: 3px;
 }
 
 h6 {
   margin: 0;
-  color: white;
+  color: rgb(255, 255, 255);
 }
 
 img {
@@ -135,4 +137,26 @@ img {
 .button:hover {
   background-color: white;
   color: #282c34;
+}
+
+.collapsible {
+  background-color: #777;
+  color: white;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+}
+
+.active, .collapsible:hover {
+  background-color: #555;
+}
+
+.content {
+  padding: 18px;
+  visibility: hidden;
+  background-color: rgb(34, 47, 73);
 }

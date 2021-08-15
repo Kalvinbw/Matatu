@@ -125,7 +125,17 @@ const handleAbility = (player, game, cards) => {
 }
 
 function drawExtra(player, game, drawAmount, cards) {
-    let nextPlayer;
+    let nextPlayer = (games[gameIndex].players.length - 1) === player.index ? 0 : player.index + 1;
+    if(game.deck.length <= (drawAmount * cards.length)) {
+        let shuffleCards = game.playPile.splice(0, game.playPile.length - 2);
+        shuffleCards = shuffleArray(shuffleCards);
+        game.deck.unshift(...shuffleCards);
+    }
+
+    let extra = game.deck.splice(0, (drawAmount * cards.length));
+    game.players[nextPlayer].cards.push(...extra);
+
+    game.players[player.index].turn = false;
     if(game.players.length > 2) {
         if((game.players.length - 1) === player.index) {
             nextPlayer = 1;
@@ -137,16 +147,6 @@ function drawExtra(player, game, drawAmount, cards) {
     } else {
         nextPlayer = player.index;
     }
-    if(game.deck.length <= (drawAmount * cards.length)) {
-        let shuffleCards = game.playPile.splice(0, game.playPile.length - 2);
-        shuffleCards = shuffleArray(shuffleCards);
-        game.deck.unshift(...shuffleCards);
-    }
-
-    let extra = game.deck.splice(0, (drawAmount * cards.length));
-    game.players[nextPlayer].cards.push(...extra);
-
-    game.players[player.index].turn = false;
     game.players[nextPlayer].turn = true;
     return game
 }
