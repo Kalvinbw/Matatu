@@ -15,6 +15,7 @@ const addRoom = (player, roomName, deck) => {
     if(index !== -1) {
         player.index = games[index].players.length
         player.cards = games[index].deck.splice(0,4);
+        player.turn = false;
         games[index].players.push(player);
         ////console.log(player.cards);
         return games[index];
