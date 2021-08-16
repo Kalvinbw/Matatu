@@ -1,9 +1,5 @@
 import React from 'react';
 import logo from '../assets/logo.svg';
-import heart from '../assets/hearts.svg'
-import club from '../assets/clubs.svg'
-import diamond from '../assets/diamonds.svg'
-import spade from '../assets/spades.svg'
 
 function Card(props) {
     function onClick() {
