@@ -188,13 +188,13 @@ class App extends React.Component {
       players: players
     });
 
-    /* TODO: Check if deck is empty and reset it */
+    
     this.checkGameOver();
     this.checkDeck();
   }
 
   abilites(cards, players, id) {
-    /* TODO: handle 8 cards */
+  
     //console.log(cards[0].ability)
     switch(cards[0].ability) {
       case 'Draw 2':
