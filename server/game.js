@@ -15,7 +15,6 @@ const addRoom = (player, roomName, deck) => {
     if(index !== -1) {
         player.index = games[index].players.length
         player.cards = games[index].deck.splice(0,4);
-        player.turn = false;
         games[index].players.push(player);
         ////console.log(player.cards);
         return games[index];
@@ -30,7 +29,6 @@ const addRoom = (player, roomName, deck) => {
         games.push(room);
         ////console.log(room.playPile);
         return room;
-
     }
 }
 
@@ -40,24 +38,19 @@ const removeRoom = (gameIndex) => {
 
 const removePlayer = (player) => {
     let gameIndex = games.findIndex((room) => room.name === player.room);
-    if(gameIndex === -1) {return {error: 'Game not found'}};
-    //console.log(games[gameIndex]);
+    if(gameIndex === -1) {return {error: 'Game not found'}}
     let playerIndex = games[gameIndex].players.findIndex(p => p.id === player.id);
     if(playerIndex !== -1) {
-        let removedPlayer = games[gameIndex].players.splice(playerIndex, 1);
-        //console.log(player);
         if(games[gameIndex].players.length >= 1) {
-            let cards = player.cards;
-            //console.log(games[gameIndex]);
-            games[gameIndex].deck.push(...cards);
             if(player.turn) {
-                var nextPlayer = (games[gameIndex].players.length - 1) === player.index ? 0 : player.index + 1;
+                let nextPlayer = (games[gameIndex].players.length - 1) === player.index ? 0 : player.index + 1;
                 games[gameIndex].players[nextPlayer].turn = true;
             }
-            //console.log(games);
+            let cards = player.cards;
+            games[gameIndex].deck.push(...cards);
+            games[gameIndex].players.splice(playerIndex, 1);
             return games[gameIndex];
         } else {
-            //console.log('removing game');
             return removeRoom(gameIndex);
         }
     } else {
@@ -157,13 +150,19 @@ function skipTurn(player, game, cards) {
         return game;
     }
 
-    let id = player.index;
+    let nextPlayer = player.index;
     for(let i = 1; i <= cards.length; i++) {
-        id = (id === (game.players.length - 1)) ? 0 : (id + 1);
+        if((game.players.length - 1) === player.index) {
+            nextPlayer = 1;
+        } else if((game.players.length - 2) === player.index) {
+            nextPlayer = 0;
+        } else {
+            nextPlayer = player.index + 2;
+        }
     }
 
     game.players[player.index].turn = false;
-    game.players[id].turn = true;
+    game.players[nextPlayer].turn = true;
     return game;
 }
 
@@ -204,7 +203,7 @@ function gameOver(game) {
         return game;
     }
     for(let i = 0; i < game.players.length; i++) {
-        let score = 0;
+        let score = game.players[i].score;
         for(let j = 0; j < game.players[i].cards.length; j++) {
             score += game.players[i].cards[j].value;
         }

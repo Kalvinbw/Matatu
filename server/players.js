@@ -9,6 +9,8 @@ const addPlayer = ({id, name, room}) => {
     //if(existingPlayer) return "Username is taken.";
 
     let player = {id, name, room};
+    player.turn = false;
+    player.score = 0;
 
     players.push(player);
 

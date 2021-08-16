@@ -69,7 +69,7 @@ const NewApp = ({ location }) => {
         socket.on('playerData', (player) => {
             //console.log('new player data received');
             if(player.sort) {
-                player.cards = sortCards(player.cards);
+                sortCards();
             }
             setPlayer(player);
         });

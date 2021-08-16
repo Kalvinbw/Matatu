@@ -42,6 +42,7 @@ const io = require('socket.io')(server, {
 io.on('connection', (socket) => {
     ////console.log(`New client connected: ${socket.id}`);
     socket.on('joinRoom', ({ name, room }, callback) => {
+        console.log(`New client connected: ${socket.id}`);
         let Player = addPlayer({id: socket.id, name, room});
         if(Player === "Username is taken.") return callback(Player);
         
@@ -61,10 +62,7 @@ io.on('connection', (socket) => {
         //console.log(p);
         let updatedGame = drawCard(p);
         if(!updatedGame.error) {
-            for(let i = 0; i < updatedGame.players.length; i++) {
-                io.to(updatedGame.players[i].id).emit('playerData', updatedGame.players[i]);
-            }
-            io.in(updatedGame.name).emit('roomData', updatedGame);
+            sendData(updatedGame);
         } else {
             console.log(updatedGame.error);
         }
@@ -77,30 +75,30 @@ io.on('connection', (socket) => {
     socket.on('playData', (p, hand) => {
         //console.log('play data in server');
         let updatedGame = doPlay(p, hand);
-        for(let i = 0; i < updatedGame.players.length; i++) {
-            io.to(updatedGame.players[i].id).emit('playerData', updatedGame.players[i]);
-        }
-        io.to(p.id).emit('playerData', updatedGame.players[p.index]);
-        io.in(updatedGame.name).emit('roomData', updatedGame);
+        sendData(updatedGame);
     });
 
     socket.on('disconnect', () => {
-        //console.log('a player has disconnected');
+        console.log('a player has disconnected: ' + socket.id);
         let p = getPlayer(socket.id);
-        let updatedGame = removePlayer(p);
-        //console.log(updatedGame.name);
-        if(updatedGame.error) {
-            //console.log('error on disconenct');
-        } else {
-            for(let i = 0; i < updatedGame.players.length; i++) {
-                io.to(updatedGame.players[i].id).emit('playerData', updatedGame.players[i]);
+        if(p) {
+            let updatedGame = removePlayer(p);
+            //console.log(updatedGame.name);
+            if(updatedGame.error) {
+                //console.log('error on disconenct');
+            } else {
+                sendData(updatedGame);
             }
-            io.to(p.id).emit('playerData', updatedGame.players[p.index]);
-            io.in(updatedGame.name).emit('roomData', updatedGame);
         }
-
     });
 });
+
+const sendData = (game) => {
+    for(let i = 0; i < game.players.length; i++) {
+        io.to(game.players[i].id).emit('playerData', game.players[i]);
+    }
+    io.in(game.name).emit('roomData', game);
+}
 
 
 
