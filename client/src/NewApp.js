@@ -2,7 +2,7 @@ import './styles/App.css';
 import Header from './components/header';
 import Hand from './components/NewHand';
 import Card from './components/Card';
-//import GameOver from './components/GameOver';
+//import Rules from './components/rules';
 import React, {useEffect, useState} from 'react';
 import queryString from 'query-string';
 import io from 'socket.io-client';
