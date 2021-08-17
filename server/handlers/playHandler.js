@@ -9,6 +9,8 @@ const doPlay = (player, hand) => {
 
     //filter out the selected cards
     let selectedCards = hand.filter(c => c.selected);
+    let notifyCard = selectedCards[0];
+    console.log(notifyCard);
     let ability = false;
     for(let i = 0; i < selectedCards.length; i++) {
         ability = selectedCards[i].ability !== false;
@@ -34,7 +36,7 @@ const doPlay = (player, hand) => {
         let nextPlayer = (games[gameIndex].players.length - 1) === player.index ? 0 : player.index + 1;
         games[gameIndex].players[nextPlayer].turn = true;
     }
-    games[gameIndex].msg = `${player.name} played ${numToWords.numToWords(selectedCards.length)} ${selectedCards[0].number > 10 ? selectedCards[0].name : selectedCards[0].ability ? selectedCards[0].name : selectedCards[0].number}${selectedCards.length > 1 ? 's' : ''}`;
+    games[gameIndex].msg = `${player.name} played ${numToWords.numToWords(selectedCards.length)} ${notifyCard.number > 10 ? notifyCard.name : notifyCard.ability ? notifyCard.name : notifyCard.number}${selectedCards.length > 1 ? 's' : ''}`;
     games[gameIndex] = gameOver(games[gameIndex]);
     return games[gameIndex];
 }
