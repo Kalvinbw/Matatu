@@ -53,6 +53,8 @@ io.on('connection', (socket) => {
 
         io.to(socket.id).emit('playerData', Player);
         io.in(Room.name).emit('roomData', Room);
+        let msg = `${Player.name} has joined the game!`;
+        notify(Room, msg);
 
         callback();
     });
@@ -64,6 +66,7 @@ io.on('connection', (socket) => {
         //console.log(updatedGame);
         if(!updatedGame.error) {
             sendData(updatedGame);
+            notify(updatedGame, updatedGame.msg);
         } else {
             console.log(updatedGame.error);
         }
@@ -77,6 +80,7 @@ io.on('connection', (socket) => {
         //console.log('play data in server');
         let updatedGame = doPlay(p, hand);
         sendData(updatedGame);
+        notify(updatedGame, updatedGame.msg);
     });
 
     socket.on('disconnect', () => {
@@ -89,6 +93,8 @@ io.on('connection', (socket) => {
                 //console.log('error on disconenct');
             } else {
                 sendData(updatedGame);
+                let msg = `${p.name} has left the game`;
+                notify(updatedGame, msg);
             }
         }
     });
@@ -99,7 +105,11 @@ const sendData = (game) => {
         io.to(game.players[i].id).emit('playerData', game.players[i]);
     }
     io.in(game.name).emit('roomData', game);
-    io.in(game.name).emit('notification', game.msg);
+}
+
+// TODO: emit to all except the sender
+const notify = (game, msg) => {
+    io.in(game.name).emit('notification', msg);
 }
 
 
