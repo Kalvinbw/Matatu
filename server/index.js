@@ -5,9 +5,11 @@ const express = require('express');
 const app = express();
 const path = require('path');
 
-const {makeDeck} = require('./deck');
-const { addPlayer, getPlayer } = require('./players');
-const {addRoom, doPlay, drawCard, removePlayer} = require('./game');
+const {makeDeck} = require('./handlers/deck');
+const { addPlayer, getPlayer } = require('./handlers/players');
+const {addRoom, removePlayer} = require('./handlers/game');
+const doPlay = require('./handlers/playHandler');
+const drawCard = require('./handlers/drawCard');
 
 //app.use(express.static(path.join(__dirname, '../client/build')));
 

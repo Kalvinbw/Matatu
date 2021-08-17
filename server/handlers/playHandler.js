@@ -1,63 +1,6 @@
-let {makeDeck, shuffleArray} = require('./deck');
+const {addRoom, removePlayer, gameOver} = require("./game");
+let {games, players} = require('../db/db');
 const numToWords = require('num-to-words');
-let games = [];
-
-const addRoom = (player, roomName, deck) => {
-    let d = [...deck];
-    let index = games.findIndex((room) => room.name === roomName);
-    ////console.log(index);
-    
-    if(games.length !== 0 && index !== -1) {
-        if(games[index].players.length >= 8) {
-            return {error: "Room is full"};
-        }
-    }
-
-    if(index !== -1) {
-        player.index = games[index].players.length
-        player.cards = games[index].deck.splice(0,4);
-        games[index].players.push(player);
-        ////console.log(player.cards);
-        return games[index];
-
-    } else if(index === -1) {
-        player.index = 0;
-        let playDeck = d.splice(0,1);
-        player.cards = d.splice(0,4);
-        player.turn = true;
-        ////console.log(playDeck);
-        let room = {name: roomName, players: [player], deck: d, playPile: playDeck};
-        games.push(room);
-        ////console.log(room.playPile);
-        return room;
-    }
-}
-
-const removeRoom = (gameIndex) => {
-    return games.splice(gameIndex, 1)[0];
-}
-
-const removePlayer = (player) => {
-    let gameIndex = games.findIndex((room) => room.name === player.room);
-    if(gameIndex === -1) {return {error: 'Game not found'}}
-    let playerIndex = games[gameIndex].players.findIndex(p => p.id === player.id);
-    if(playerIndex !== -1) {
-        if(games[gameIndex].players.length >= 1) {
-            if(player.turn) {
-                let nextPlayer = (games[gameIndex].players.length - 1) === player.index ? 0 : player.index + 1;
-                games[gameIndex].players[nextPlayer].turn = true;
-            }
-            let cards = player.cards;
-            games[gameIndex].deck.push(...cards);
-            games[gameIndex].players.splice(playerIndex, 1);
-            return games[gameIndex];
-        } else {
-            return removeRoom(gameIndex);
-        }
-    } else {
-        return {error: 'Player not found'};
-    }
-}
 
 const doPlay = (player, hand) => {
     ////console.log('doPlay');
@@ -172,50 +115,4 @@ function skipTurn(player, game, cards) {
     return game;
 }
 
-const drawCard = (player) => {
-    if(!player) {return {error: 'no player data received'}}
-    //console.log('draw card');
-    let gameIndex = games.findIndex((room) => room.name === player.room);
-
-    //console.log(games[gameIndex]);
-    if(games[gameIndex].deck.length <= 1) {
-        let shuffleCards = games[gameIndex].playPile.splice(0, games[gameIndex].playPile.length - 2);
-        //console.log(shuffleCards);
-        shuffleCards = shuffleArray(shuffleCards);
-        //console.log(shuffleCards);
-        games[gameIndex].deck.unshift(...shuffleCards);
-    }
-
-    let c = games[gameIndex].deck.splice(games[gameIndex].deck.length - 1, 1);
-    player.cards.push(c[0]);
-    player.turn = false;
-    games[gameIndex].players[player.index] = player;
-    let nextPlayer = (games[gameIndex].players.length - 1) === player.index ? 0 : player.index + 1;
-    games[gameIndex].players[nextPlayer].turn = true;
-    games[gameIndex] = gameOver(games[gameIndex]);
-    games[gameIndex].msg = `${player.name} drew a card`;
-    return games[gameIndex];
-
-}
-
-function gameOver(game) {
-    for(let i = 0; i < game.players.length; i++) {
-        if(game.players[i].cards.length === 0) {
-            game.gameOver = true;
-            break;
-        }
-    }
-    if(!game.gameOver) {
-        return game;
-    }
-    for(let i = 0; i < game.players.length; i++) {
-        let score = game.players[i].score;
-        for(let j = 0; j < game.players[i].cards.length; j++) {
-            score += game.players[i].cards[j].value;
-        }
-        game.players[i].score = score;
-    }
-    return game;
-}
-
-module.exports = {addRoom, doPlay, drawCard, removePlayer};
+module.exports = doPlay;
