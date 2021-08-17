@@ -1,4 +1,5 @@
 let {makeDeck, shuffleArray} = require('./deck');
+const numToWords = require('num-to-words');
 let games = [];
 
 const addRoom = (player, roomName, deck) => {
@@ -90,6 +91,7 @@ const doPlay = (player, hand) => {
         let nextPlayer = (games[gameIndex].players.length - 1) === player.index ? 0 : player.index + 1;
         games[gameIndex].players[nextPlayer].turn = true;
     }
+    games[gameIndex].msg = `${player.name} played ${numToWords.numToWords(selectedCards.length)} ${selectedCards[0].number} card${selectedCards.length > 1 ? 's' : ''}`;
     games[gameIndex] = gameOver(games[gameIndex]);
     return games[gameIndex];
 }
@@ -142,11 +144,14 @@ function drawExtra(player, game, drawAmount, cards) {
         nextPlayer = player.index;
     }
     game.players[nextPlayer].turn = true;
+    let l = numToWords.numToWords(cards.length);
+    game.msg = `${player.name} played ${l} ${cards[0].number}${cards.length > 1 ? 's' : ''}`;
     return game
 }
 
 function skipTurn(player, game, cards) {
     if(game.players.length <= 2) {
+        game.msg = `${player.name} played ${numToWords.numToWords(cards.length)} Ace${cards.length > 1 ? 's' : ''}`;
         return game;
     }
 
@@ -163,6 +168,7 @@ function skipTurn(player, game, cards) {
 
     game.players[player.index].turn = false;
     game.players[nextPlayer].turn = true;
+    game.msg = `${player.name} played ${numToWords.numToWords(cards.length)} Ace${cards.length > 1 ? 's' : ''}`;
     return game;
 }
 
@@ -187,7 +193,7 @@ const drawCard = (player) => {
     let nextPlayer = (games[gameIndex].players.length - 1) === player.index ? 0 : player.index + 1;
     games[gameIndex].players[nextPlayer].turn = true;
     games[gameIndex] = gameOver(games[gameIndex]);
-
+    games[gameIndex].msg = `${player.name} drew a card`;
     return games[gameIndex];
 
 }

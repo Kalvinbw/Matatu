@@ -61,6 +61,7 @@ io.on('connection', (socket) => {
         //console.log('drawing card');
         //console.log(p);
         let updatedGame = drawCard(p);
+        //console.log(updatedGame);
         if(!updatedGame.error) {
             sendData(updatedGame);
         } else {
@@ -98,6 +99,7 @@ const sendData = (game) => {
         io.to(game.players[i].id).emit('playerData', game.players[i]);
     }
     io.in(game.name).emit('roomData', game);
+    io.in(game.name).emit('notification', game.msg);
 }
 
 

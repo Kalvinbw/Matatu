@@ -2,6 +2,7 @@ import './styles/App.css';
 import Header from './components/header';
 import Hand from './components/NewHand';
 import Card from './components/Card';
+import Notification from './components/Notification';
 //import Rules from './components/rules';
 import React, {useEffect, useState} from 'react';
 import queryString from 'query-string';
@@ -26,6 +27,7 @@ let socket;
 const NewApp = ({ location }) => {
     const [player, setPlayer] = useState('');
     const [game, setGame] = useState({});
+   
     
     let ENDPOINT = '/';
 
@@ -78,6 +80,8 @@ const NewApp = ({ location }) => {
             socket.off('playerData');
         }
     }, [player]);
+
+
 
     //Send a request to call a play
     const callPlay = () => {
@@ -134,6 +138,7 @@ const NewApp = ({ location }) => {
     return (
         <div>
             <Header text={`Welcome to ${game.name}, ${player.name}`}/>
+            <Notification socket={socket}/>
             <div className='App-body'>
                 <div className='H-stack' style={{backgroundColor: '#222f49'}}>
                     {game.players.map((p) => (
