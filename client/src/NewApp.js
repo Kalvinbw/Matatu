@@ -11,7 +11,6 @@ import GameOver from "./components/GameOver";
 import PlayerCard from "./components/playerCard";
 
 // TODO: Handle one card left (going out)
-// TODO: announce plays after they happen
 // TODO: Handle 8 card
 // TODO: Handle adding another draw extra card if you have one in hand
 // TODO: let room set final score and play games until reached (add score each round);
