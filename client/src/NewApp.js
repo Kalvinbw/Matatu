@@ -15,7 +15,6 @@ import PlayerCard from "./components/playerCard";
 // TODO: Handle adding another draw extra card if you have one in hand
 // TODO: let room set final score and play games until reached (add score each round);
 // TODO: end game right away and total scores
-// TODO: add suit symbols to cards
 
 // TODO: handle max amount of players in a game (or add more to deck)
 // TODO: handle waiting room and room creator
