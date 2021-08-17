@@ -27,9 +27,9 @@ const Notification = (props) => {
 
     return (
         <div>
-            <div class={show ? "alert show showAlert" : "alert hide"} id='notification'>
-                <span class="fas fa-exclamation-circle"></span>
-                <span class="msg">{msg}</span>
+            <div className={show ? "alert show showAlert" : "alert hide"} id='notification'>
+                <span className="fas fa-exclamation-circle"></span>
+                <span className="msg">{msg}</span>
             </div>
         </div>
         
