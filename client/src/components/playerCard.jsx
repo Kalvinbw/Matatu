@@ -11,7 +11,8 @@ function PlayerCard(props) {
 
   return (
       <div className={myClass}>
-          <Avatar>{props.player.name}</Avatar>
+          <Avatar>{props.player.name[0]}</Avatar>
+          <h6>{props.player.name}</h6>
           <h6>Cards: {props.player.cards.length}</h6>
           <h6>Score: {props.player.score}</h6>
       </div>

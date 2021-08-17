@@ -42,7 +42,7 @@ function Card(props) {
         return (
             <div className={myClass} onClick={onClick}>
                     {myImg}
-                    <h6>{props.card.number}</h6>
+                    <h6>{props.card.number > 10 ? props.card.name : props.card.ability ? props.card.name : props.card.number}</h6>
             </div>
         );
     } else {

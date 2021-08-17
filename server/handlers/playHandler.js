@@ -34,7 +34,7 @@ const doPlay = (player, hand) => {
         let nextPlayer = (games[gameIndex].players.length - 1) === player.index ? 0 : player.index + 1;
         games[gameIndex].players[nextPlayer].turn = true;
     }
-    games[gameIndex].msg = `${player.name} played ${numToWords.numToWords(selectedCards.length)} ${selectedCards[0].number} card${selectedCards.length > 1 ? 's' : ''}`;
+    games[gameIndex].msg = `${player.name} played ${numToWords.numToWords(selectedCards.length)} ${selectedCards[0].number > 10 ? selectedCards[0].name : selectedCards[0].ability ? selectedCards[0].name : selectedCards[0].number}${selectedCards.length > 1 ? 's' : ''}`;
     games[gameIndex] = gameOver(games[gameIndex]);
     return games[gameIndex];
 }
@@ -88,7 +88,7 @@ function drawExtra(player, game, drawAmount, cards) {
     }
     game.players[nextPlayer].turn = true;
     let l = numToWords.numToWords(cards.length);
-    game.msg = `${player.name} played ${l} ${cards[0].number}${cards.length > 1 ? 's' : ''}`;
+    game.msg = `${player.name} played ${l} ${cards[0].number > 10 ? cards[0].name : cards[0].ability ? cards[0].name : cards[0].number}${cards.length > 1 ? 's' : ''}`;
     return game
 }
 
