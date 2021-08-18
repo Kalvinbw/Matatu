@@ -15,7 +15,7 @@ const drawCard = require('./handlers/drawCard');
 
 app.use(cors());
 
-app.use(express.static(path.join(__dirname, '../client/build')));
+app.use(express.static(path.join(__dirname, '/client/build')));
 
 //get the page when they go to the root directory
 app.get('/', function(req,res) {
