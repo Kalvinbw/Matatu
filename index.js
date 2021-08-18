@@ -28,7 +28,7 @@ app.get('/', function(req,res) {
 // });
 
 //listen on the port //the function part is a callback function
-let server = app.listen(listenPort, function() {
+let server = app.listen(process.env.PORT || listenPort, function() {
     console.log("listener is active on Port " + listenPort);
 });
 
