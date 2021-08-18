@@ -42,7 +42,7 @@ const removePlayer = (player) => {
     if(gameIndex === -1) {return {error: 'Game not found'}}
     let playerIndex = games[gameIndex].players.findIndex(p => p.id === player.id);
     if(playerIndex !== -1) {
-        if(player.turn) {
+        if(player.turn && games[gameIndex].players.length > 1) {
             let nextPlayer = (games[gameIndex].players.length - 1) === player.index ? 0 : player.index + 1;
             games[gameIndex].players[nextPlayer].turn = true;
         }
