@@ -81,8 +81,12 @@ io.on('connection', (socket) => {
     socket.on('playData', (p, hand) => {
         //console.log('play data in server');
         let updatedGame = doPlay(p, hand);
-        sendData(updatedGame);
-        notify(updatedGame, updatedGame.msg);
+        if(updatedGame.error) {
+            console.log(updatedGame.error);
+        } else {
+            sendData(updatedGame);
+            notify(updatedGame, updatedGame.msg);
+        }
     });
 
     socket.on('disconnect', () => {
@@ -92,7 +96,8 @@ io.on('connection', (socket) => {
             let updatedGame = removePlayer(p);
             //console.log(updatedGame.name);
             if(updatedGame.error) {
-                //console.log('error on disconenct');
+                console.log('error on disconnect');
+                console.log(updatedGame.error);
             } else {
                 sendData(updatedGame);
                 let msg = `${p.name} has left the game`;

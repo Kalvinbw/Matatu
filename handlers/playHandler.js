@@ -6,7 +6,7 @@ const doPlay = (player, hand) => {
     ////console.log('doPlay');
     //find the game
     let gameIndex = games.findIndex((room) => room.name === player.room);
-
+    if(gameIndex === -1) {return {error: 'Game not found'}}
     //filter out the selected cards
     let selectedCards = hand.filter(c => c.selected);
     let notifyCard = selectedCards[0];
