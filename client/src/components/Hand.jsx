@@ -16,7 +16,7 @@ class Hand extends React.Component {
     }
 
     static getDerivedStateFromProps(props, state) {
-        //console.log('get derived state called');
+        ////console.log('get derived state called');
         if(state.selectedCards.length > 0) {
             return null;
         }
@@ -98,13 +98,13 @@ class Hand extends React.Component {
             }
 
             if(hand[i].number === card.number) {
-                //console.log('match number found');
+                ////console.log('match number found');
                 hand[i].canPlay = true;
             } else {
                 hand[i].canPlay = false;
             }
         }
-        //console.log(hand);
+        ////console.log(hand);
         this.setState({
             cards: hand,
             selectedCards: selectedCards
@@ -112,7 +112,7 @@ class Hand extends React.Component {
     }
 
     handlePlay() {
-        //console.log('handle play called from hand')
+        ////console.log('handle play called from hand')
         if(this.state.selectedCards.length === 0) {
             alert('Please select which cards you want to play');
             this.props.action();

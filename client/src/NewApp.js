@@ -2,33 +2,39 @@ import './styles/App.css';
 import Header from './components/header';
 import Hand from './components/NewHand';
 import Card from './components/Card';
-//import GameOver from './components/GameOver';
-import React, {useState, useEffect} from 'react';
+import Notification from './components/Notification';
+//import Rules from './components/rules';
+import React, {useEffect, useState} from 'react';
 import queryString from 'query-string';
 import io from 'socket.io-client';
 import GameOver from "./components/GameOver";
+import PlayerCard from "./components/playerCard";
 
-// TODO: End game and calculate winner
 // TODO: Handle one card left (going out)
 // TODO: Handle 8 card
 // TODO: Handle adding another draw extra card if you have one in hand
+// TODO: let room set final score and play games until reached (add score each round);
+// TODO: end game right away and total scores
+// TODO: fix skip card
+// TODO: make the discard pile messy
+
 // TODO: handle max amount of players in a game (or add more to deck)
 // TODO: handle waiting room and room creator
 // TODO: handle disconnect and reconnect
-// TODO: handle removing room and players when exit
-// TODO: handle player leaving room during game
+
 
 let socket;
 
-const NewApp = ({ location }, props) => {
+const NewApp = ({ location }) => {
     const [player, setPlayer] = useState('');
     const [game, setGame] = useState({});
+   
     
     let ENDPOINT = '/';
 
     //handle joining the game room
     useEffect(() => {
-        console.log(location);
+        //console.log(location);
         const {name, room} = queryString.parse(location.search);
 
         socket = io(ENDPOINT, {
@@ -36,18 +42,23 @@ const NewApp = ({ location }, props) => {
         });
 
         socket.emit('joinRoom', {name, room}, (error) => {
-            console.log('emit join room');
+            //console.log('emit join room');
             if(error) {
                 alert(error);
-                props.history.push('/');
             }
         });
+
+        return () => {
+            //console.log('about to disconnect');
+            socket.disconnect();
+        }
     }, [ENDPOINT, location.search]);
 
     //handle update data calls
     useEffect(() => {
         socket.on('roomData', (room) => {
-            console.log('new room data received');
+            //console.log('new room data received');
+            //console.log(room);
             setGame(room);
         });
 
@@ -59,6 +70,10 @@ const NewApp = ({ location }, props) => {
     //handle player data
     useEffect(() => {
         socket.on('playerData', (player) => {
+            //console.log('new player data received');
+            if(player.sort) {
+                sortCards();
+            }
             setPlayer(player);
         });
 
@@ -66,6 +81,8 @@ const NewApp = ({ location }, props) => {
             socket.off('playerData');
         }
     }, [player]);
+
+
 
     //Send a request to call a play
     const callPlay = () => {
@@ -79,7 +96,28 @@ const NewApp = ({ location }, props) => {
 
     //send data to draw a card
     const drawCard = () => {
+        // console.log('drawing card');
+        // console.log(player);
         socket.emit('drawCard', player);
+    }
+
+    const sortCards = () => {
+        //console.log('called sortCards');
+        let cards = [...player.cards];
+        //console.log(cards);
+        for(let i = 0; i < cards.length; i++) {
+            for(let j = i + 1; j < cards.length; j++) {
+                let temp;
+                if(cards[i].number > cards[j].number) {
+                    temp = cards[i];
+                    cards[i] = cards[j];
+                    cards[j] = temp;
+                }
+            }
+        }
+        //console.log(cards);
+        player.cards = cards;
+        setPlayer({...player});
     }
 
     //render this if not loaded yet
@@ -95,29 +133,24 @@ const NewApp = ({ location }, props) => {
     }
 
     if(game.gameOver) {
-        return <GameOver players={game.players}/>;
+        return <GameOver players={game.players} socket={socket}/>;
     }
 
     return (
         <div>
             <Header text={`Welcome to ${game.name}, ${player.name}`}/>
+            <Notification socket={socket}/>
             <div className='App-body'>
                 <div className='H-stack' style={{backgroundColor: '#222f49'}}>
-                    <div>
-                        <p>Players in {game.name}</p>
-                        <ul>
-                            {game.players.map((p) => (
-                                <li key={p.name}>{p.name}</li>
-                            ))}
-                        </ul>
-                    </div>
-                    
+                    {game.players.map((p) => (
+                        <PlayerCard key={p.id} player={p} className='Hand'/>
+                    ))}
                 </div>
                 <div className='H-stack'>
                     <div className='Deck' id='drawPile'>             
                     {game.deck.map((card) => (
                         <Card key={card.id} show={false} card={card}
-                        className='Card' handleChange={drawCard}/>
+                        className='Card' handleChange={player.turn ? drawCard : () => null}/>
                     ))}
                     </div>
 
@@ -128,11 +161,11 @@ const NewApp = ({ location }, props) => {
                     ))}
                     </div>
 
-                    <p className={player.turn ? 'App-link' : null}>
-                        {player.turn ? `Your Turn` : `Opponent's Turn`}
-                    </p>
+                    <div style={{display: 'flex',flexDirection: 'column'}}>
+                        <input type='button' onClick={player.turn ? callPlay : null} value='Play Selected Card(s)' className='button'/>
+                        <input type='button' onClick={sortCards} value='Sort Cards' className='button'/>
+                    </div>
 
-                    <input type='button' onClick={player.turn ? callPlay : null} value='Play Selected Card(s)'/>
                 </div>
                 <Hand player={player} 
                 socket={socket}
