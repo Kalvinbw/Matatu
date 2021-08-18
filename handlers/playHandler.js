@@ -100,8 +100,8 @@ function skipTurn(player, game, cards) {
         return game;
     }
 
-    let nextPlayer = player.index;
-    for(let i = 1; i <= cards.length; i++) {
+    let nextPlayer;
+    for(let i = 0; i < cards.length; i++) {
         if((game.players.length - 1) === player.index) {
             nextPlayer = 1;
         } else if((game.players.length - 2) === player.index) {
