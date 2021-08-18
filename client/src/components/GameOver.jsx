@@ -1,12 +1,14 @@
 import '../styles/App.css';
 import Header from './header';
 import React from 'react';
+import Notification from "./Notification";
 
 function GameOver(props) {
 
     return (
         <div>
             <Header text='Game Over'/>
+            <Notification socket={props.socket}/>
             <div className='App-body'>
                 <div className='H-stack' style={{backgroundColor: '#222f49', position: 'absolute'}}>
                     {props.players.map((player) => (

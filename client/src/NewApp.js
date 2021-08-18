@@ -133,7 +133,7 @@ const NewApp = ({ location }) => {
     }
 
     if(game.gameOver) {
-        return <GameOver players={game.players}/>;
+        return <GameOver players={game.players} socket={socket}/>;
     }
 
     return (
