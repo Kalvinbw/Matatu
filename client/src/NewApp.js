@@ -82,6 +82,7 @@ const NewApp = ({ location }) => {
         return () => {
             socket.off('playerData');
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [player]);
 
     useEffect(() => {
