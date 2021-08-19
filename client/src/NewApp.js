@@ -20,8 +20,8 @@ import WaitingRoom from './components/WaitingRoom';
 // TODO: make the discard pile messy
 
 // TODO: handle max amount of players in a game (or add more to deck)
-// TODO: handle waiting room and room creator
 // TODO: handle disconnect and reconnect
+// TODO: add message feature
 
 
 let socket;
