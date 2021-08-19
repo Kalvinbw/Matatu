@@ -9,6 +9,7 @@ import queryString from 'query-string';
 import io from 'socket.io-client';
 import GameOver from "./components/GameOver";
 import PlayerCard from "./components/playerCard";
+import WaitingRoom from './components/WaitingRoom';
 
 // TODO: Handle one card left (going out)
 // TODO: Handle 8 card
@@ -28,6 +29,7 @@ let socket;
 const NewApp = ({ location }) => {
     const [player, setPlayer] = useState('');
     const [game, setGame] = useState({});
+    const [begin, setBegin] = useState(false);
    
     
     let ENDPOINT = '/';
@@ -82,6 +84,17 @@ const NewApp = ({ location }) => {
         }
     }, [player]);
 
+    useEffect(() => {
+        socket.on('Begin', () => {
+            //console.log('new player data received');
+            setBegin(true);
+        });
+
+        return () => {
+            socket.off('Begin');
+        }
+    }, [begin]);
+
 
 
     //Send a request to call a play
@@ -130,6 +143,13 @@ const NewApp = ({ location }) => {
                 </div>
             </div>
         )
+    } else if(game.players.length > 0 && !begin) {
+        return (
+            <WaitingRoom socket={socket}
+                host={player.host ? true : false}
+                game={game}
+            />
+        );
     }
 
     if(game.gameOver) {

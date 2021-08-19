@@ -24,6 +24,7 @@ const addRoom = (player, roomName, deck) => {
         let playDeck = d.splice(0,1);
         player.cards = d.splice(0,4);
         player.turn = true;
+        player.host = true;
         ////console.log(playDeck);
         let room = {name: roomName, players: [player], deck: d, playPile: playDeck};
         games.push(room);

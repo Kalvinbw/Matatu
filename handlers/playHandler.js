@@ -10,7 +10,6 @@ const doPlay = (player, hand) => {
     //filter out the selected cards
     let selectedCards = hand.filter(c => c.selected);
     let notifyCard = selectedCards[0];
-    console.log(notifyCard);
     let ability = false;
     for(let i = 0; i < selectedCards.length; i++) {
         ability = selectedCards[i].ability !== false;

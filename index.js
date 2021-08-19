@@ -89,6 +89,10 @@ io.on('connection', (socket) => {
         }
     });
 
+    socket.on('BeginGame', (gameName) => {
+        io.to(gameName).emit('Begin');
+    });
+
     socket.on('disconnect', () => {
         console.log('a player has disconnected: ' + socket.id);
         let p = getPlayer(socket.id);
