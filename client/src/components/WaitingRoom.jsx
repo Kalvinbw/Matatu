@@ -9,6 +9,17 @@ const WaitingRoom = (props) => {
         props.socket.emit('BeginGame', props.game.name);
     }
 
+    let button;
+    if(props.host) {
+        if(props.game.players.length < 2) {
+            button = <p>Waiting for other players</p>
+        } else {
+            button = <input type='button' className='button' value='Begin Game' onClick={BeginGame}/>
+        }
+    } else {
+        button = <p>Waiting for host to begin game</p>
+    }
+
     return (
         <div>
             <Header text={`${props.game.name} Waiting Room`}></Header>
@@ -20,7 +31,7 @@ const WaitingRoom = (props) => {
                     ))}
                 </div>
                 <div>
-                    {props.host ? <input type='button' className='button' value='Begin Game' onClick={BeginGame}/> : null}
+                    {button}
                 </div>
             </div>
         </div>
