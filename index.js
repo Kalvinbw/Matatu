@@ -1,4 +1,12 @@
-//Server file
+/********************************************************
+ * File: index.js
+ * Summary: Server
+ * 
+ * Listener: Listens for incoming traffic and directs it
+ * Socket: Sets up websocket and handles calls
+*********************************************************/
+
+
 const listenPort = 8080;
 const cors = require('cors');
 const express = require('express');
