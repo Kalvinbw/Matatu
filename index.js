@@ -104,6 +104,8 @@ io.on('connection', (socket) => {
     socket.on('disconnect', () => {
         console.log('a player has disconnected: ' + socket.id);
         let p = getPlayer(socket.id);
+        console.log('player to be removed');
+        console.log(p.name);
         if(p) {
             let updatedGame = removePlayer(p);
             //console.log(updatedGame.name);

@@ -183,8 +183,10 @@ const NewApp = ({ location }) => {
                     </div>
 
                     <div style={{display: 'flex',flexDirection: 'column'}}>
-                        <input type='button' onClick={player.turn ? callPlay : null} value='Play Selected Card(s)' className='button'/>
-                        <input type='button' onClick={sortCards} value='Sort Cards' className='button'/>
+                        <input type='button' onClick={player.turn ? callPlay : null} 
+                            value='Play Selected Card(s)' className='button'/>
+                        <input type='button' onClick={sortCards} value='Sort Cards' 
+                            className='button'/>
                     </div>
 
                 </div>
