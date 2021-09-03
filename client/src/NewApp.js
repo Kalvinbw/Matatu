@@ -22,6 +22,8 @@ import WaitingRoom from './components/WaitingRoom';
 // TODO: handle max amount of players in a game (or add more to deck)
 // TODO: handle disconnect and reconnect
 // TODO: add message feature
+// TODO: handle people leaving and then joining again mid game and it not letting them in
+// TODO: handle letting single player play after everyone leaves
 
 
 let socket;
