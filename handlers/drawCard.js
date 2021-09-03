@@ -1,6 +1,22 @@
+/********************************************************
+ * File: drawCard.js
+ * Summary: Handles a player drawing a card
+*********************************************************/
+
 const {addRoom, removePlayer, gameOver} = require("./game");
 let {games, players} = require('../db/db');
 
+
+
+/***********************************************************************
+ * Function: drawCard
+ * Description: Draws a card from the play pile and changes turn to 
+ *              next player
+ * 
+ * @param player - required - The player info that wants to draw
+ * 
+ * @return - game info after turn change
+************************************************************************/
 const drawCard = (player) => {
     if(!player) {return {error: 'no player data received'}}
     //console.log('draw card');

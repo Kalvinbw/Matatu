@@ -1,4 +1,12 @@
-//Server file
+/********************************************************
+ * File: index.js
+ * Summary: Server
+ * 
+ * Listener: Listens for incoming traffic and directs it
+ * Socket: Sets up websocket and handles calls
+*********************************************************/
+
+
 const listenPort = 8080;
 const cors = require('cors');
 const express = require('express');
@@ -11,8 +19,6 @@ const {addRoom, removePlayer} = require('./handlers/game');
 const doPlay = require('./handlers/playHandler');
 const drawCard = require('./handlers/drawCard');
 
-//app.use(express.static(path.join(__dirname, '../client/build')));
-
 app.use(cors());
 
 app.use(express.static(path.join(__dirname, '/client/build')));
@@ -22,12 +28,7 @@ app.get('/', function(req,res) {
     res.sendFile(path.resolve(__dirname + '/client/build', 'index.html'));
 });
 
-// app.get("/getCards", async (req, res) => {
-//     let d = makeDeck();
-//     res.status(200).json(d);
-// });
-
-//listen on the port //the function part is a callback function
+//listen on the port the function part is a callback function
 let server = app.listen(process.env.PORT || listenPort, function() {
     console.log("listener is active on Port " + listenPort);
 });
@@ -41,8 +42,9 @@ const io = require('socket.io')(server, {
 });
 
 
+//Handle Socket connecttions
 io.on('connection', (socket) => {
-    ////console.log(`New client connected: ${socket.id}`);
+    /* New socket connection */
     socket.on('joinRoom', ({ name, room }, callback) => {
         console.log(`New client connected: ${socket.id}`);
         let Player = addPlayer({id: socket.id, name, room});
@@ -61,6 +63,7 @@ io.on('connection', (socket) => {
         callback();
     });
 
+    /* on draw card */
     socket.on('drawCard', (p) => {
         //console.log('drawing card');
         //console.log(p);
@@ -74,10 +77,12 @@ io.on('connection', (socket) => {
         }
     });
 
+    /* on call play */
     socket.on('callPlay', (player) => {
         io.to(player.id).emit('playCalled');
     });
 
+    /* on play data */
     socket.on('playData', (p, hand) => {
         //console.log('play data in server');
         let updatedGame = doPlay(p, hand);
@@ -89,9 +94,17 @@ io.on('connection', (socket) => {
         }
     });
 
+    /* on begin game */
+    socket.on('BeginGame', (gameName) => {
+        io.to(gameName).emit('Begin');
+    });
+
+    /* on disconnect */
     socket.on('disconnect', () => {
         console.log('a player has disconnected: ' + socket.id);
         let p = getPlayer(socket.id);
+        console.log('player to be removed');
+        console.log(p.name);
         if(p) {
             let updatedGame = removePlayer(p);
             //console.log(updatedGame.name);

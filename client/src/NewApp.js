@@ -9,6 +9,7 @@ import queryString from 'query-string';
 import io from 'socket.io-client';
 import GameOver from "./components/GameOver";
 import PlayerCard from "./components/playerCard";
+import WaitingRoom from './components/WaitingRoom';
 
 // TODO: Handle one card left (going out)
 // TODO: Handle 8 card
@@ -19,8 +20,8 @@ import PlayerCard from "./components/playerCard";
 // TODO: make the discard pile messy
 
 // TODO: handle max amount of players in a game (or add more to deck)
-// TODO: handle waiting room and room creator
 // TODO: handle disconnect and reconnect
+// TODO: add message feature
 
 
 let socket;
@@ -28,6 +29,7 @@ let socket;
 const NewApp = ({ location }) => {
     const [player, setPlayer] = useState('');
     const [game, setGame] = useState({});
+    const [begin, setBegin] = useState(false);
    
     
     let ENDPOINT = '/';
@@ -80,7 +82,19 @@ const NewApp = ({ location }) => {
         return () => {
             socket.off('playerData');
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [player]);
+
+    useEffect(() => {
+        socket.on('Begin', () => {
+            //console.log('new player data received');
+            setBegin(true);
+        });
+
+        return () => {
+            socket.off('Begin');
+        }
+    }, [begin]);
 
 
 
@@ -130,6 +144,13 @@ const NewApp = ({ location }) => {
                 </div>
             </div>
         )
+    } else if(game.players.length > 0 && !begin) {
+        return (
+            <WaitingRoom socket={socket}
+                host={player.host ? true : false}
+                game={game}
+            />
+        );
     }
 
     if(game.gameOver) {
@@ -162,8 +183,10 @@ const NewApp = ({ location }) => {
                     </div>
 
                     <div style={{display: 'flex',flexDirection: 'column'}}>
-                        <input type='button' onClick={player.turn ? callPlay : null} value='Play Selected Card(s)' className='button'/>
-                        <input type='button' onClick={sortCards} value='Sort Cards' className='button'/>
+                        <input type='button' onClick={player.turn ? callPlay : null} 
+                            value='Play Selected Card(s)' className='button'/>
+                        <input type='button' onClick={sortCards} value='Sort Cards' 
+                            className='button'/>
                     </div>
 
                 </div>

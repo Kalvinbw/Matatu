@@ -1,6 +1,25 @@
+/********************************************************
+ * File: game.js
+ * Summary: Creates rooms, adds/removes players to room
+ *          removes rooms. 'Room' is equivalent to 'Game'
+*********************************************************/
+
 let {makeDeck, shuffleArray} = require('./deck');
 let {games, players} = require('../db/db');
 
+
+
+/***********************************************************************
+ * Function: addRoom
+ * Description: either adds player to room or 
+ *              creates a new room
+ * 
+ * @param player - required - player info
+ * @param roomName - required - the name of room to join or create
+ * @param deck - the deck to add to a room on creation
+ * 
+ * @return - room information
+************************************************************************/
 const addRoom = (player, roomName, deck) => {
     let d = [...deck];
     let index = games.findIndex((room) => room.name === roomName);
@@ -24,6 +43,7 @@ const addRoom = (player, roomName, deck) => {
         let playDeck = d.splice(0,1);
         player.cards = d.splice(0,4);
         player.turn = true;
+        player.host = true;
         ////console.log(playDeck);
         let room = {name: roomName, players: [player], deck: d, playPile: playDeck};
         games.push(room);
@@ -32,11 +52,29 @@ const addRoom = (player, roomName, deck) => {
     }
 }
 
+/***********************************************************************
+ * Function: removeRoom
+ * Description: removes a room from game array in db
+ * 
+ * @param gameIndex - required - The index of the game to be removed
+ * 
+ * @return - removed game
+************************************************************************/
 const removeRoom = (gameIndex) => {
     console.log('removing room');
     return games.splice(gameIndex, 1)[0];
 }
 
+
+/***********************************************************************
+ * Function: removePlayer
+ * Description: removes a player on disconnect. Will call remove room if
+ *              no more players
+ * 
+ * @param player - required - The player to be removed
+ * 
+ * @return - game the removed player was in
+************************************************************************/
 const removePlayer = (player) => {
     let gameIndex = games.findIndex((room) => room.name === player.room);
     if(gameIndex === -1) {return {error: 'Game not found'}}
@@ -58,6 +96,15 @@ const removePlayer = (player) => {
     }
 }
 
+
+/***********************************************************************
+ * Function: gameOver
+ * Description: Totals all the players scores
+ * 
+ * @param game - required - The game
+ * 
+ * @return - game with player scores totaled
+************************************************************************/
 function gameOver(game) {
     for(let i = 0; i < game.players.length; i++) {
         if(game.players[i].cards.length === 0) {

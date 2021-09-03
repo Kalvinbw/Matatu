@@ -1,16 +1,32 @@
+/********************************************************
+ * File: playHandler.js
+ * Summary: Handles a play call
+*********************************************************/
+
 const {addRoom, removePlayer, gameOver} = require("./game");
 let {games, players} = require('../db/db');
 const numToWords = require('num-to-words');
+const {shuffleArray} = require('./deck');
 
+
+
+/***********************************************************************
+ * Function: doPlay
+ * Description: Takes the played card and handles them. Moves to 
+ *              playPile, and changes turn
+ * 
+ * @param player - required - The player who played the cards
+ * @param hand - required - The cards in the players hand
+ * 
+ * @return - game with new info
+************************************************************************/
 const doPlay = (player, hand) => {
-    ////console.log('doPlay');
     //find the game
     let gameIndex = games.findIndex((room) => room.name === player.room);
     if(gameIndex === -1) {return {error: 'Game not found'}}
     //filter out the selected cards
     let selectedCards = hand.filter(c => c.selected);
     let notifyCard = selectedCards[0];
-    console.log(notifyCard);
     let ability = false;
     for(let i = 0; i < selectedCards.length; i++) {
         ability = selectedCards[i].ability !== false;
@@ -41,6 +57,17 @@ const doPlay = (player, hand) => {
     return games[gameIndex];
 }
 
+
+/***********************************************************************
+ * Function: handleAbility
+ * Description: Sends card info to correct function to handle ability
+ * 
+ * @param player - required - The player who played the cards
+ * @param game - required - The current game info
+ * @param cards - required - The cards played by player
+ * 
+ * @return - game with updated info
+************************************************************************/
 const handleAbility = (player, game, cards) => {
     let g = game;
     switch(cards[0].ability) {
@@ -65,6 +92,19 @@ const handleAbility = (player, game, cards) => {
     return g;
 }
 
+
+/***********************************************************************
+ * Function: drawExtra
+ * Description: draws extra cards and puts them in hand of next player
+ * 
+ * @param player - required - The player who played the cards
+ * @param game - required - The current game info
+ * @param drawAmount - required - The amount to be drawn
+ *                  (2: two cards, 10: four cards, joker: five cards)
+ * @param cards - required - the cards played by player
+ * 
+ * @return - game with updated info
+************************************************************************/
 function drawExtra(player, game, drawAmount, cards) {
     let nextPlayer = (game.players.length - 1) === player.index ? 0 : player.index + 1;
     if(game.deck.length <= (drawAmount * cards.length)) {
@@ -94,6 +134,17 @@ function drawExtra(player, game, drawAmount, cards) {
     return game
 }
 
+
+/***********************************************************************
+ * Function: skipTurn
+ * Description: skips players based on how many skip cards were played
+ * 
+ * @param player - required - The player who played the cards
+ * @param game - required - The current game info
+ * @param cards - required - the cards played by player
+ * 
+ * @return - game with updated info
+************************************************************************/
 function skipTurn(player, game, cards) {
     if(game.players.length <= 2) {
         game.msg = `${player.name} played ${numToWords.numToWords(cards.length)} Ace${cards.length > 1 ? 's' : ''}`;
