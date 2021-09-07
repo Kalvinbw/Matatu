@@ -13,6 +13,7 @@ import WaitingRoom from './components/WaitingRoom';
 
 // TODO: Handle one card left (going out)
 // TODO: Handle 8 card
+// TODO: Put the matching card on the bottom
 // TODO: Handle adding another draw extra card if you have one in hand
 // TODO: let room set final score and play games until reached (add score each round);
 // TODO: end game right away and total scores
