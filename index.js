@@ -6,7 +6,7 @@
  * Socket: Sets up websocket and handles calls
 *********************************************************/
 
-
+// TODO: Add authentication
 const listenPort = 8080;
 const cors = require('cors');
 const express = require('express');
