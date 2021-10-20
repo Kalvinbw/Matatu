@@ -12,45 +12,12 @@ const cors = require('cors');
 const express = require('express');
 const app = express();
 const path = require('path');
-//for the firestore
-// const admin = require('firebase-admin');
 
 const {makeDeck} = require('./handlers/deck');
 const { addPlayer, getPlayer } = require('./handlers/players');
 const {addRoom, removePlayer} = require('./handlers/game');
 const doPlay = require('./handlers/playHandler');
 const drawCard = require('./handlers/drawCard');
-
-//for the firestore testing
-// admin.initializeApp();
-  
-// const db = admin.firestore();
-
-// async function testSetDB() {
-//     const docRef = db.collection('users').doc('alovelace');
-
-//     await docRef.set({
-//     first: 'Ada',
-//     last: 'Lovelace',
-//     born: 1815
-//     });
-
-//     const aTuringRef = db.collection('users').doc('aturing');
-
-//     await aTuringRef.set({
-//     'first': 'Alan',
-//     'middle': 'Mathison',
-//     'last': 'Turing',
-//     'born': 1912
-//     });index.js
-
-//     const snapshot = await db.collection('users').get();
-//     snapshot.forEach((doc) => {
-//     console.log(doc.id, '=>', doc.data());
-//     });
-// }
-// testSetDB();
-
 
 //begin normal app code
 app.use(cors());
